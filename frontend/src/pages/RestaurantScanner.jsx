@@ -100,7 +100,7 @@ const periodBtn = (active) => ({
   padding: "10px",
   borderRadius: 8,
   border: active ? "2px solid var(--restaurant-accent)" : "1px solid var(--line)",
-  background: active ? "#EAF6EE" : "var(--surface)",
+  background: active ? "var(--success-bg)" : "var(--surface)",
   fontWeight: 700,
   cursor: "pointer",
 });
@@ -125,7 +125,7 @@ const feedbackPanel = (f) => ({
   textAlign: "center",
   padding: 24,
   background: f ? f.bg : "var(--surface)",
-  color: f ? "#fff" : "var(--ink-soft)",
+  color: f ? "var(--surface)" : "var(--ink-soft)",
   border: f ? "none" : "1px dashed var(--line)",
   transition: "background 120ms ease",
 });

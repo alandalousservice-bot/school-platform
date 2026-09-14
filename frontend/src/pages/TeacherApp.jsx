@@ -321,7 +321,7 @@ const toggleBtn = (absent) => ({
   fontWeight: 700,
   fontSize: "0.85rem",
   cursor: "pointer",
-  color: "#fff",
+  color: "var(--surface)",
   background: absent ? "var(--danger)" : "var(--restaurant-accent)",
   minWidth: 74,
 });
@@ -330,7 +330,7 @@ const submitBtn = {
   width: "100%",
   padding: "15px",
   background: "var(--teacher-accent)",
-  color: "#fff",
+  color: "var(--surface)",
   border: "none",
   borderRadius: 10,
   fontSize: "1rem",
@@ -339,16 +339,16 @@ const submitBtn = {
   margin: "20px 0 32px",
 };
 
-const gradePanel = { background: "#f3f7ff", border: "1px solid #cbd7f5", borderRadius: 12, padding: 14, marginTop: 18 };
+const gradePanel = { background: "var(--success-bg)", border: "1px solid var(--line)", borderRadius: 12, padding: 14, marginTop: 18 };
 const gradeToolbar = { display: "flex", gap: 8, flexWrap: "wrap" };
-const gradeRow = { display: "grid", gridTemplateColumns: "1fr 105px 105px minmax(120px,1fr) 55px", gap: 7, alignItems: "center", padding: "8px 0", borderTop: "1px solid #dce5f7" };
-const gradeNote = { minWidth: 0, border: "1px solid #cbd7f5", borderRadius: 7, padding: "8px 6px", font: "inherit", fontSize: ".75rem" };
-const saveGradeBtn = { border: 0, borderRadius: 7, padding: "8px 5px", background: "var(--teacher-accent)", color: "#fff", cursor: "pointer" };
+const gradeRow = { display: "grid", gridTemplateColumns: "1fr 105px 105px minmax(120px,1fr) 55px", gap: 7, alignItems: "center", padding: "8px 0", borderTop: "1px solid var(--line)" };
+const gradeNote = { minWidth: 0, border: "1px solid var(--line)", borderRadius: 7, padding: "8px 6px", font: "inherit", fontSize: ".75rem" };
+const saveGradeBtn = { border: 0, borderRadius: 7, padding: "8px 5px", background: "var(--teacher-accent)", color: "var(--surface)", cursor: "pointer" };
 const gradeSubmit = { ...saveGradeBtn, background: "var(--brand)" };
-const teacherSchedule = { background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 12, padding: 12, marginBottom: 12, boxShadow: "0 4px 14px #007a3d12" };
+const teacherSchedule = { background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 12, padding: 12, marginBottom: 12, boxShadow: "var(--elevation-1)" };
 const scheduleLine = { display: "grid", gridTemplateColumns: "1fr .8fr 1.4fr 1fr", gap: 6, padding: "7px 0", borderTop: "1px solid var(--line)", fontSize: ".76rem", marginTop: 7 };
-const teacherProfileCard = { display: "flex", flexDirection: "column", gap: 4, background: "linear-gradient(135deg,#edf8f1,#fff)", border: "1px solid #c5dfcc", borderRadius: 12, padding: 12, marginBottom: 12 }; 
-const historyToggle = { border: "1px solid #b8d8c4", background: "#f4fbf6", color: "var(--brand-deep)", borderRadius: 9, padding: "10px 12px", cursor: "pointer", fontWeight: 700, width: "100%" };
+const teacherProfileCard = { display: "flex", flexDirection: "column", gap: 4, background: "var(--success-bg)", border: "1px solid var(--line)", borderRadius: 12, padding: 12, marginBottom: 12 }; 
+const historyToggle = { border: "1px solid var(--line)", background: "var(--success-bg)", color: "var(--brand-deep)", borderRadius: 9, padding: "10px 12px", cursor: "pointer", fontWeight: 700, width: "100%" };
 const historyPanel = { background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 12, padding: 12, margin: "10px 0 14px" };
 const historyLine = { display: "grid", gridTemplateColumns: "90px 1fr 1fr", gap: 7, padding: "8px 0", borderTop: "1px solid var(--line)", fontSize: ".75rem", marginTop: 7 };
 const attendanceSummary = { display: "flex", justifyContent: "space-around", padding: "10px 4px", margin: "8px 0", background: "var(--surface)", borderRadius: 10, fontSize: ".82rem" };
