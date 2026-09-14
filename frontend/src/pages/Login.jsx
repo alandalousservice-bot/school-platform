@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import BrandSeal from "../components/ui/BrandSeal";
+import Button from "../components/ui/Button";
+import { SCHOOL_BRAND } from "../brand";
 
 const ROLE_ROUTES = {
   ADMIN: "/admin",
@@ -37,7 +40,9 @@ export default function Login() {
   return (
     <div style={styles.page}>
       <form style={styles.card} onSubmit={handleSubmit}>
-        <h1 style={styles.title}>منصة المدرسة</h1>
+        <BrandSeal size={64} />
+        <h1 style={styles.title}>{SCHOOL_BRAND.institution}</h1>
+        <small style={styles.official}>{SCHOOL_BRAND.wilaya} · {SCHOOL_BRAND.ministry}</small>
         <p style={styles.subtitle}>الدخول إلى الحساب</p>
 
         <label style={styles.label}>اسم المستخدم</label>
@@ -60,9 +65,9 @@ export default function Login() {
 
         {error && <div style={styles.error}>{error}</div>}
 
-        <button style={styles.button} disabled={loading}>
+        <Button className="login-button" style={{ width: "100%", marginTop: 8, fontSize: "1rem" }} disabled={loading}>
           {loading ? "جارِ الدخول..." : "دخول"}
-        </button>
+        </Button>
       </form>
     </div>
   );
@@ -95,18 +100,7 @@ const styles = {
     fontSize: "1rem",
     fontFamily: "inherit",
   },
-  button: {
-    width: "100%",
-    padding: "13px",
-    background: "var(--brand)",
-    color: "#fff",
-    border: "none",
-    borderRadius: 8,
-    fontSize: "1rem",
-    fontWeight: 700,
-    cursor: "pointer",
-    marginTop: 8,
-  },
+  official: { display: "block", color: "var(--ink-soft)", fontSize: ".72rem", marginTop: 5 },
   error: {
     background: "var(--danger-bg)",
     color: "var(--danger)",
