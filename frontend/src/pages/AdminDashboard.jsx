@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import TopBar from "../components/TopBar";
 import { LABELS } from "../labels";
+import Icon from "../components/ui/Icon";
 
 const roles = { ADMIN: "مدير", SUPER_ADMIN: "مدير عام", TEACHER: "أستاذ", RESTAURANT_MANAGER: "مشرف المطعم" };
 const actions = { SUBMIT_ABSENCE: "تسجيل غياب", SCAN_MEAL: "صرف وجبة", EDIT_INVENTORY: "تعديل مخزون", CREATE_USER: "إنشاء حساب", DEACTIVATE_USER: "تعطيل حساب", EXPORT_REPORT: "تصدير تقرير" };
@@ -37,7 +38,7 @@ export default function AdminDashboard() {
   async function addUser(e) { e.preventDefault(); try { await api.post("/api/admin/users", null, { params: newUser }); setNewUser({ username: "", password: "", full_name: "", role: "TEACHER" }); load(); } catch (e) { setError(e.response?.data?.detail || "تعذّر إنشاء الحساب"); } }
   async function deactivateUser(id) { if (!window.confirm("هل تريد تعطيل هذا الحساب؟ لن يتمكن صاحبه من تسجيل الدخول.")) return; try { await api.put(`/api/admin/users/${id}/deactivate`); load(); } catch { setError("تعذّر تعطيل الحساب"); } }
   const cards = stats ? [["التلاميذ", stats.total_students, "👥", "#2855c7"], ["غياب اليوم", stats.absent_today, "📋", "#d97706"], ["وجبات اليوم", stats.meals_served_today, "🍽️", "#16845b"], ["تنبيهات المخزون", stats.low_stock_items, "📦", stats.low_stock_items ? "#dc2626" : "#16845b"]] : [];
-  const nav = [["dashboard", "⌂", "لوحة التحكم"], ["absences", "✓", "إدارة الغيابات"], ["students", "👥", "التلاميذ والملفات"], ["grades", "▤", "نقاط التلاميذ"], ["schedule", "◫", "التوزيع الأسبوعي"], ["resources", "▦", "المرافق والمواقيت"], ["inventory", "▣", "مخزون المطعم"], ["users", "⚙", "حسابات الطاقم"]];
+  const nav = [["dashboard", "dashboard", "لوحة التحكم"], ["absences", "attendance", "إدارة الغيابات"], ["students", "students", "التلاميذ والملفات"], ["grades", "grades", "نقاط التلاميذ"], ["schedule", "schedule", "التوزيع الأسبوعي"], ["resources", "inventory", "المرافق والمواقيت"], ["inventory", "inventory", "مخزون المطعم"], ["users", "users", "حسابات الطاقم"]];
   return <div className="admin-shell"><TopBar accent="var(--brand)" title={LABELS.admin} /><div className="admin-layout"><aside className="sidebar"><div className="side-title">نظام المدرسة<span>الإدارة المركزية</span></div>{nav.map(([id, icon, label]) => <button key={id} className={active === id ? "nav-item active" : "nav-item"} onClick={() => setActive(id)}><i>{icon}</i>{label}</button>)}<div className="side-footer">السنة الدراسية<br /><b>2026 / 2027</b></div></aside><main className="admin-main">
     <section className="welcome"><div><span className="eyebrow">الإدارة المدرسية</span><h1>صباح الخير، مدير المدرسة</h1><p>مركز المتابعة اليومية للحضور، المطعم، والموارد.</p></div><button className="refresh" onClick={load}>↻ تحديث البيانات</button></section>
     {error && <div className="alert">{error}</div>}{loading && !overview && <div className="loading">جارِ تجهيز لوحة المتابعة...</div>}
