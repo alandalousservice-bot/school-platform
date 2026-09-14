@@ -1,0 +1,14 @@
+import { useMemo, useState } from "react";
+import Icon from "./Icon";
+import Badge from "./Badge";
+import { EmptyState } from "./States";
+
+/** DataList props: columns, data, searchable (default true), pageSize (default 20). */
+export default function DataList({ columns = [], data = [], searchable = true, pageSize = 20 }) {
+  const [query, setQuery] = useState(""); const [sort, setSort] = useState(null); const [page, setPage] = useState(1); const [compact, setCompact] = useState(() => localStorage.getItem("school-list-density") === "compact");
+  const filtered = useMemo(() => { const rows = data.filter(row => !query || columns.some(col => String(row[col.key] ?? "").toLowerCase().includes(query.toLowerCase()))); return sort ? [...rows].sort((a, b) => String(a[sort.key] ?? "").localeCompare(String(b[sort.key] ?? ""), "ar", { numeric: true }) * (sort.direction === "asc" ? 1 : -1)) : rows; }, [columns, data, query, sort]);
+  const pages = Math.max(1, Math.ceil(filtered.length / pageSize)); const rows = filtered.slice((Math.min(page, pages) - 1) * pageSize, Math.min(page, pages) * pageSize);
+  function sortBy(key) { setPage(1); setSort(current => current?.key === key ? { key, direction: current.direction === "asc" ? "desc" : "asc" } : { key, direction: "asc" }); }
+  function density() { setCompact(value => { const next = !value; localStorage.setItem("school-list-density", next ? "compact" : "comfortable"); return next; }); }
+  return <div className={`data-list ${compact ? "data-list-compact" : ""}`}><div className="data-list-toolbar">{searchable && <label className="data-list-search"><Icon name="students" size={16} /><input value={query} onChange={e => { setQuery(e.target.value); setPage(1); }} placeholder="بحث في القائمة" /></label>}<button className="density-toggle" onClick={density}><Icon name="dashboard" size={16} />{compact ? "عرض مريح" : "عرض مضغوط"}</button>{query && <Badge variant="info">فلتر: {query}</Badge>}</div>{!rows.length ? <EmptyState iconName="empty" title="لا توجد بيانات" /> : <div className="data-list-scroll"><table><thead><tr>{columns.map(col => <th key={col.key}>{col.sortable ? <button className="sort-button" onClick={() => sortBy(col.key)}>{col.label}<Icon name="schedule" size={13} /></button> : col.label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={row.id ?? index}>{columns.map(col => <td key={col.key}>{col.render ? col.render(row[col.key], row) : row[col.key]}</td>)}</tr>)}</tbody></table></div>}{pages > 1 && <div className="data-list-pagination"><button disabled={page <= 1} onClick={() => setPage(value => Math.max(1, value - 1))}>السابق</button><span>صفحة {Math.min(page, pages)} من {pages}</span><button disabled={page >= pages} onClick={() => setPage(value => Math.min(pages, value + 1))}>التالي</button></div>}</div>;
+}
