@@ -1,0 +1,7 @@
+venv/
+node_modules/
+*.db
+dist/
+__pycache__/
+.env
+backend/app/static/fonts/*.ttf

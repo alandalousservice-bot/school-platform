@@ -1,0 +1,13 @@
+{
+  "name": "منصة الإدارة المدرسية والمطعم",
+  "short_name": "منصة المدرسة",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F8FA",
+  "theme_color": "#1E3A8A",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
