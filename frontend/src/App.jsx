@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import TeacherApp from "./pages/TeacherApp";
 import RestaurantScanner from "./pages/RestaurantScanner";
 import AdminDashboard from "./pages/AdminDashboard";
+import DesignSystem from "./pages/DesignSystem";
 
 function ProtectedRoute({ allowedRoles, children }) {
   const role = localStorage.getItem("role");
@@ -41,6 +42,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/design-system" element={<ProtectedRoute allowedRoles={["ADMIN", "SUPER_ADMIN"]}><DesignSystem /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
