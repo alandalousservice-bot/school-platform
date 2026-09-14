@@ -108,6 +108,17 @@ def schedule_coverage(school_year: str = "2026/2027", current_user: User = Depen
         result.append({"level": q.level, "subject": q.subject, "expected": expected, "assigned": assigned, "covered": min(100, round(assigned / expected * 100)) if expected else 0})
     return result
 
+@router.get("/teachers/workload")
+def teacher_workload(current_user: User = Depends(require_roles("ADMIN", "SUPER_ADMIN")), db: Session = Depends(get_db)):
+    profiles = {p.user_id: p for p in db.query(TeacherProfile).all()}
+    rows = []
+    for teacher in db.query(User).filter(User.role == Role.TEACHER).all():
+        profile = profiles.get(teacher.id); lessons = db.query(Schedule).filter(Schedule.teacher_id == teacher.id).all()
+        used = sum(next((q.minutes_per_lesson for q in db.query(SubjectWeeklyQuota).filter(SubjectWeeklyQuota.subject == s.subject).all()), 45) for s in lessons)
+        target = profile.weekly_target_minutes if profile else 1440
+        rows.append({"teacher_id": teacher.id, "teacher": teacher.full_name, "service_type": profile.service_type if profile else "FULL_TIME", "target_minutes": target, "assigned_minutes": used, "percentage": round(used / target * 100) if target else 0})
+    return rows
+
 @router.post("/schedules/generate")
 def generate_schedules(payload: dict = {}, current_user: User = Depends(require_roles("ADMIN", "SUPER_ADMIN")), db: Session = Depends(get_db)):
     """ينشئ مسودة توزيع من الحصص المطلوبة، مع فحص تعارض الأستاذ والقسم."""
