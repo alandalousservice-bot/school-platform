@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { SCHOOL_BRAND } from "../brand";
 import BrandSeal from "./ui/BrandSeal";
+import Button from "./ui/Button";
 
 export default function TopBar({ title, accent }) {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function TopBar({ title, accent }) {
       <div style={titleWrap}><span style={pageTitle}>{title}</span><span style={line} /></div>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <span style={{ fontSize: "0.88rem", opacity: 0.9 }}>{fullName}</span>
-        <button onClick={logout} style={logoutBtn}>خروج</button>
+        <Button onClick={logout} variant="ghost" size="sm">خروج</Button>
       </div>
     </div>
   );
@@ -35,19 +36,8 @@ const bar = {
 };
 
 const identity = { display: "flex", alignItems: "center", gap: 10 };
-const seal = { width: 38, height: 38, borderRadius: "50%", display: "grid", placeItems: "center", background: "var(--surface)", border: "2px solid var(--danger)", boxShadow: "inset 0 0 0 3px var(--brand)", fontSize: "1.25rem" };
 const institution = { fontWeight: 900, fontSize: "0.95rem" };
 const official = { opacity: 0.82, fontSize: "0.66rem", marginTop: 2 };
 const titleWrap = { display: "flex", alignItems: "center", gap: 10, marginRight: "auto", marginLeft: 22 };
 const pageTitle = { fontWeight: 800, fontSize: "0.9rem" };
 const line = { width: 4, height: 24, background: "var(--danger)", borderRadius: 4 };
-
-const logoutBtn = {
-  background: "rgba(255,255,255,0.18)",
-  border: "1px solid rgba(255,255,255,0.4)",
-  color: "var(--surface)",
-  borderRadius: 6,
-  padding: "5px 12px",
-  fontSize: "0.82rem",
-  cursor: "pointer",
-};
