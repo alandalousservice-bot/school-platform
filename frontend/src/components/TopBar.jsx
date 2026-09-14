@@ -27,7 +27,7 @@ const bar = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  color: "#fff",
+  color: "var(--surface)",
   padding: "10px 22px",
   position: "sticky",
   top: 0,
@@ -35,17 +35,17 @@ const bar = {
 };
 
 const identity = { display: "flex", alignItems: "center", gap: 10 };
-const seal = { width: 38, height: 38, borderRadius: "50%", display: "grid", placeItems: "center", background: "#fff", border: "2px solid #CE1126", boxShadow: "inset 0 0 0 3px #007A3D", fontSize: "1.25rem" };
+const seal = { width: 38, height: 38, borderRadius: "50%", display: "grid", placeItems: "center", background: "var(--surface)", border: "2px solid var(--danger)", boxShadow: "inset 0 0 0 3px var(--brand)", fontSize: "1.25rem" };
 const institution = { fontWeight: 900, fontSize: "0.95rem" };
 const official = { opacity: 0.82, fontSize: "0.66rem", marginTop: 2 };
 const titleWrap = { display: "flex", alignItems: "center", gap: 10, marginRight: "auto", marginLeft: 22 };
 const pageTitle = { fontWeight: 800, fontSize: "0.9rem" };
-const line = { width: 4, height: 24, background: "#CE1126", borderRadius: 4 };
+const line = { width: 4, height: 24, background: "var(--danger)", borderRadius: 4 };
 
 const logoutBtn = {
   background: "rgba(255,255,255,0.18)",
   border: "1px solid rgba(255,255,255,0.4)",
-  color: "#fff",
+  color: "var(--surface)",
   borderRadius: 6,
   padding: "5px 12px",
   fontSize: "0.82rem",
