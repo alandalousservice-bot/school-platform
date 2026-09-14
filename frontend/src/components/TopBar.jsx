@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { SCHOOL_BRAND } from "../brand";
+import BrandSeal from "./ui/BrandSeal";
 
 export default function TopBar({ title, accent }) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function TopBar({ title, accent }) {
 
   return (
     <div style={{ ...bar, background: accent }}>
-      <div style={identity}><div style={seal}><span>🇩🇿</span></div><div><div style={institution}>{SCHOOL_BRAND.institution}</div><div style={official}>{SCHOOL_BRAND.republic} · {SCHOOL_BRAND.ministry}</div></div></div>
+      <div style={identity}><BrandSeal /><div><div style={institution}>{SCHOOL_BRAND.institution}</div><div style={official}>{SCHOOL_BRAND.republic} · {SCHOOL_BRAND.ministry}</div></div></div>
       <div style={titleWrap}><span style={pageTitle}>{title}</span><span style={line} /></div>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <span style={{ fontSize: "0.88rem", opacity: 0.9 }}>{fullName}</span>
