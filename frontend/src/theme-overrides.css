@@ -274,3 +274,4 @@ body {
   .index-image-frame { box-shadow: 0 20px 40px rgba(15,70,51,.16), 6px 6px 0 rgba(230,184,92,.25); }
   .panel::before, .metric::before { opacity: .65; }
 }
+.file-dropzone{display:grid;justify-items:center;gap:7px;width:100%;padding:22px;border:1px dashed var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font:inherit;cursor:pointer;transition:border-color var(--motion-fast) var(--motion-ease),background var(--motion-fast) var(--motion-ease)}.file-dropzone:hover,.file-dropzone.is-dragging{border-color:var(--brand);background:var(--success-bg)}.file-dropzone .ui-icon{color:var(--brand)}.file-dropzone small{color:var(--ink-soft)}
