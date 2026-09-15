@@ -1,11 +1,110 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-<symbol id="dashboard" viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm10 7h6v-9h-6v9ZM4 20h6v-3H4v3Zm10-12h6V4h-6v4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
-<symbol id="attendance" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6M4 4h16v16H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
-<symbol id="students" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5M16 5c2.5.5 3 4 .5 5M17 15c2.5.5 4 2 4 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
-<symbol id="grades" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
-<symbol id="schedule" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 3v4M16 3v4M4 10h16M8 14h3M13 14h3M8 17h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
-<symbol id="inventory" viewBox="0 0 24 24"><path d="m4 8 8-4 8 4-8 4-8-4Zm0 0v8l8 4 8-4V8M12 12v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
-<symbol id="budget" viewBox="0 0 24 24"><path d="M4 7h16v12H4zM7 7V5h10v2M8 12h8M8 15h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="15" r="1" fill="currentColor"/></symbol>
-<symbol id="users" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c0-3 2.5-5 6-5s6 2 6 5M15 15c3.5 0 5 2 5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
-<symbol id="empty" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 14c1.1 1.2 2.3 1.8 4 1.8s2.9-.6 4-1.8M9 9h.01M15 9h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <defs>
+    <linearGradient id="icon-teal" x1="3" y1="2" x2="21" y2="22" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#66D6A3"/><stop offset=".52" stop-color="#1B9A70"/><stop offset="1" stop-color="#0B5A43"/>
+    </linearGradient>
+    <linearGradient id="icon-blue" x1="4" y1="3" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#88C8FF"/><stop offset=".48" stop-color="#4D8FDB"/><stop offset="1" stop-color="#3B5BA7"/>
+    </linearGradient>
+    <linearGradient id="icon-gold" x1="3" y1="4" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE79A"/><stop offset=".52" stop-color="#EFB95F"/><stop offset="1" stop-color="#B56C29"/>
+    </linearGradient>
+    <linearGradient id="icon-violet" x1="2" y1="2" x2="22" y2="23" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D7C7FF"/><stop offset=".52" stop-color="#8B70D6"/><stop offset="1" stop-color="#5B3C9D"/>
+    </linearGradient>
+    <linearGradient id="icon-orange" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD18A"/><stop offset=".5" stop-color="#E89B4D"/><stop offset="1" stop-color="#AF5E2D"/>
+    </linearGradient>
+    <linearGradient id="icon-surface" x1="4" y1="3" x2="19" y2="21" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".98"/><stop offset="1" stop-color="#D5EEE3" stop-opacity=".86"/>
+    </linearGradient>
+    <filter id="icon-shadow" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="1.6" stdDeviation="1.15" flood-color="#073D2D" flood-opacity=".2"/>
+    </filter>
+    <filter id="icon-soft-shadow" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="1" stdDeviation=".8" flood-color="#073D2D" flood-opacity=".12"/>
+    </filter>
+  </defs>
+
+  <symbol id="dashboard" viewBox="0 0 24 24">
+    <g filter="url(#icon-shadow)">
+      <rect x="3.5" y="3.5" width="7" height="7.5" rx="2" fill="url(#icon-teal)"/>
+      <rect x="13.5" y="3.5" width="7" height="4.5" rx="2" fill="url(#icon-blue)"/>
+      <rect x="13.5" y="10" width="7" height="10.5" rx="2" fill="url(#icon-gold)"/>
+      <rect x="3.5" y="13" width="7" height="7.5" rx="2" fill="url(#icon-violet)"/>
+      <path d="M5.5 6.3h3M15.5 5.75h3M15.5 13h3M5.5 16h3" stroke="#fff" stroke-opacity=".72" stroke-width="1" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <symbol id="attendance" viewBox="0 0 24 24">
+    <g filter="url(#icon-shadow)">
+      <path d="M7.2 3.5h9.6A2.7 2.7 0 0 1 19.5 6.2v11.6a2.7 2.7 0 0 1-2.7 2.7H7.2a2.7 2.7 0 0 1-2.7-2.7V6.2a2.7 2.7 0 0 1 2.7-2.7Z" fill="url(#icon-surface)" stroke="url(#icon-blue)" stroke-width="1.2"/>
+      <path d="M8.2 3.6v2.6M15.8 3.6v2.6M4.8 8h14.4" stroke="url(#icon-violet)" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="m8 13 2.1 2.1 5.1-5" fill="none" stroke="url(#icon-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+
+  <symbol id="students" viewBox="0 0 24 24">
+    <g filter="url(#icon-shadow)">
+      <circle cx="9" cy="8" r="3.1" fill="url(#icon-blue)"/>
+      <path d="M3.2 19.6c.35-3.15 2.35-5.1 5.8-5.1s5.45 1.95 5.8 5.1" fill="url(#icon-surface)" stroke="url(#icon-blue)" stroke-width="1.35" stroke-linejoin="round"/>
+      <circle cx="17.2" cy="8.8" r="2.3" fill="url(#icon-violet)"/>
+      <path d="M15.2 14.8c.7-.45 1.45-.65 2.3-.65 2.25 0 3.45 1.45 3.6 3.65" fill="none" stroke="url(#icon-violet)" stroke-width="1.35" stroke-linecap="round"/>
+      <path d="M7.7 8h2.6M8.8 6.7v2.6" stroke="#fff" stroke-opacity=".75" stroke-width=".8" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <symbol id="grades" viewBox="0 0 24 24">
+    <g filter="url(#icon-shadow)">
+      <path d="M5 4.2h10.8a3.2 3.2 0 0 1 3.2 3.2v12.4H8.2A3.2 3.2 0 0 1 5 16.6V4.2Z" fill="url(#icon-violet)"/>
+      <path d="M5 4.2h10.8A3.2 3.2 0 0 1 19 7.4v12.4H8.2A3.2 3.2 0 0 1 5 16.6V4.2Z" fill="url(#icon-surface)" fill-opacity=".68"/>
+      <path d="M8.5 8h7.2M8.5 11.5h7.2M8.5 15h4.5" stroke="url(#icon-violet)" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="m16.7 3.8 1 1 1.9-1.9" fill="none" stroke="url(#icon-gold)" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </symbol>
+
+  <symbol id="schedule" viewBox="0 0 24 24">
+    <g filter="url(#icon-shadow)">
+      <rect x="3.7" y="5.2" width="16.6" height="15.1" rx="2.7" fill="url(#icon-surface)" stroke="url(#icon-blue)" stroke-width="1.3"/>
+      <path d="M7.5 3.7v3.2M16.5 3.7v3.2M4.2 9.7h15.6" stroke="url(#icon-blue)" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="9" cy="14" r="1.3" fill="url(#icon-teal)"/><circle cx="15" cy="14" r="1.3" fill="url(#icon-gold)"/><circle cx="9" cy="17.5" r="1.3" fill="url(#icon-violet)"/><path d="M12 13.8h1.4M12 17.3h1.4" stroke="#6F8880" stroke-width="1.1" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <symbol id="inventory" viewBox="0 0 24 24">
+    <g filter="url(#icon-shadow)">
+      <path d="m4 7.6 8-4 8 4-8 4-8-4Z" fill="url(#icon-orange)"/>
+      <path d="M4 7.6v8.8l8 4 8-4V7.6l-8 4-8-4Z" fill="url(#icon-surface)" stroke="url(#icon-orange)" stroke-width="1.25" stroke-linejoin="round"/>
+      <path d="M12 11.6v8.6M7.5 9.3l4.5 2.3 4.5-2.3" fill="none" stroke="url(#icon-orange)" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="m16.2 5.3 1.1.6" stroke="#fff" stroke-opacity=".75" stroke-width="1" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <symbol id="budget" viewBox="0 0 24 24">
+    <g filter="url(#icon-shadow)">
+      <path d="M4 7.2h16v12.3H4z" fill="url(#icon-surface)" stroke="url(#icon-gold)" stroke-width="1.3" stroke-linejoin="round"/>
+      <path d="M7 7.2V5.6c0-.8.6-1.4 1.4-1.4h7.2c.8 0 1.4.6 1.4 1.4v1.6" fill="none" stroke="url(#icon-gold)" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M4.3 11.2h15.4" stroke="url(#icon-orange)" stroke-width="1.1"/>
+      <circle cx="16.7" cy="15.2" r="2" fill="url(#icon-gold)"/><path d="M16.7 14.1v2.2M15.9 14.8c.2-.45 1.4-.4 1.5.15.1.45-.5.65-.9.75-.5.12-.8.35-.7.7.1.55 1.25.6 1.55.12" fill="none" stroke="#fff" stroke-width=".65" stroke-linecap="round"/>
+      <path d="M7.2 15h4.6" stroke="url(#icon-teal)" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <symbol id="users" viewBox="0 0 24 24">
+    <g filter="url(#icon-shadow)">
+      <circle cx="8.3" cy="8" r="3.2" fill="url(#icon-violet)"/>
+      <path d="M2.7 19.7c.35-3.2 2.3-5.1 5.6-5.1s5.25 1.9 5.6 5.1" fill="url(#icon-surface)" stroke="url(#icon-violet)" stroke-width="1.3" stroke-linejoin="round"/>
+      <circle cx="17.2" cy="9" r="2.5" fill="url(#icon-teal)"/>
+      <path d="M15 15c.65-.5 1.4-.75 2.25-.75 2.8 0 4.1 2.1 4.1 5.45" fill="none" stroke="url(#icon-teal)" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M7.2 8h2.2" stroke="#fff" stroke-opacity=".8" stroke-width=".8" stroke-linecap="round"/>
+    </g>
+  </symbol>
+
+  <symbol id="empty" viewBox="0 0 24 24">
+    <g filter="url(#icon-soft-shadow)">
+      <circle cx="12" cy="12" r="8.5" fill="url(#icon-surface)" stroke="url(#icon-blue)" stroke-width="1.3"/>
+      <path d="M8 14.5c1 1.1 2.25 1.7 4 1.7s3-.6 4-1.7" fill="none" stroke="url(#icon-violet)" stroke-width="1.2" stroke-linecap="round"/>
+      <circle cx="9" cy="10" r=".9" fill="url(#icon-teal)"/><circle cx="15" cy="10" r=".9" fill="url(#icon-teal)"/>
+    </g>
+  </symbol>
 </svg>
