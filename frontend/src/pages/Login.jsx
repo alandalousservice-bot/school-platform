@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";
 import BrandSeal from "../components/ui/BrandSeal";
 import Button from "../components/ui/Button";
+import Icon from "../components/ui/Icon";
 import { SCHOOL_BRAND } from "../brand";
 
 const ROLE_ROUTES = {
@@ -12,6 +13,12 @@ const ROLE_ROUTES = {
   RESTAURANT_MANAGER: "/restaurant",
 };
 
+const highlights = [
+  ["attendance", "الحضور والغياب", "متابعة يومية واضحة حسب القسم والفترة"],
+  ["students", "ملفات التلاميذ", "سجل موحد وآمن يسهل الوصول إليه"],
+  ["dashboard", "الإدارة والميزانية", "قرارات مبنية على مؤشرات وتقارير موثقة"],
+];
+
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -19,8 +26,8 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setError("");
     setLoading(true);
     try {
@@ -29,6 +36,7 @@ export default function Login() {
       localStorage.setItem("refresh_token", data.refresh_token);
       localStorage.setItem("role", data.role);
       localStorage.setItem("full_name", data.full_name);
+      localStorage.setItem("user_id", data.user_id);
       navigate(ROLE_ROUTES[data.role] || "/");
     } catch {
       setError("اسم المستخدم أو كلمة المرور غير صحيحة");
@@ -38,75 +46,30 @@ export default function Login() {
   }
 
   return (
-    <div style={styles.page}>
-      <form style={styles.card} onSubmit={handleSubmit}>
-        <BrandSeal size={64} />
-        <h1 style={styles.title}>{SCHOOL_BRAND.institution}</h1>
-        <small style={styles.official}>{SCHOOL_BRAND.wilaya} · {SCHOOL_BRAND.ministry}</small>
-        <p style={styles.subtitle}>الدخول إلى الحساب</p>
+    <main className="login-page">
+      <div className="login-glow login-glow-one" />
+      <div className="login-glow login-glow-two" />
+      <section className="login-showcase">
+        <div className="login-brand-lockup"><BrandSeal size={58} /><div><b>{SCHOOL_BRAND.institution}</b><small>{SCHOOL_BRAND.wilaya} · {SCHOOL_BRAND.ministry}</small></div></div>
+        <div className="login-intro"><span className="login-kicker">منصة الإدارة المدرسية</span><h1>كل تفاصيل المدرسة،<br /><em>في مكان واحد.</em></h1><p>مساحة عمل هادئة ومنظمة تساعد فريق المؤسسة على المتابعة، التعاون، واتخاذ القرار بثقة.</p></div>
+        <div className="login-highlights">{highlights.map(([icon, title, text]) => <div className="login-highlight" key={title}><span><Icon name={icon} size={18} /></span><div><b>{title}</b><small>{text}</small></div></div>)}</div>
+        <div className="login-quote">« التنظيم الجيد يترك وقتًا أكبر لما يهم: تعليم أبنائنا »</div>
+      </section>
 
-        <label style={styles.label}>اسم المستخدم</label>
-        <input
-          style={styles.input}
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          autoFocus
-          required
-        />
-
-        <label style={styles.label}>كلمة المرور</label>
-        <input
-          style={styles.input}
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        {error && <div style={styles.error}>{error}</div>}
-
-        <Button className="login-button" style={{ width: "100%", marginTop: 8, fontSize: "1rem" }} disabled={loading}>
-          {loading ? "جارِ الدخول..." : "دخول"}
-        </Button>
-      </form>
-    </div>
+      <section className="login-card-wrap">
+        <form className="login-card" onSubmit={handleSubmit}>
+          <div className="login-card-mark"><BrandSeal size={48} /></div>
+          <span className="login-card-kicker">مرحبًا بعودتك</span>
+          <h2>تسجيل الدخول</h2>
+          <p className="login-card-subtitle">أدخل بيانات حسابك للوصول إلى مساحة العمل.</p>
+          <label>اسم المستخدم<input value={username} onChange={event => setUsername(event.target.value)} autoFocus required autoComplete="username" placeholder="أدخل اسم المستخدم" /></label>
+          <label>كلمة المرور<input type="password" value={password} onChange={event => setPassword(event.target.value)} required autoComplete="current-password" placeholder="أدخل كلمة المرور" /></label>
+          {error && <div className="login-error" role="alert"><Icon name="empty" size={17} />{error}</div>}
+          <Button className="login-button" style={{ width: "100%", marginTop: 8 }} disabled={loading}>{loading ? "جارِ التحقق..." : "الدخول إلى المنصة"}<span aria-hidden="true">←</span></Button>
+          <div className="login-security"><span>●</span> اتصال محلي آمن · صلاحيات حسب الدور</div>
+        </form>
+        <small className="login-footer">{SCHOOL_BRAND.republic} · {SCHOOL_BRAND.ministry}</small>
+      </section>
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "var(--brand)",
-  },
-  card: {
-    background: "var(--surface)",
-    padding: "40px 36px",
-    borderRadius: "var(--radius)",
-    width: "min(90vw, 380px)",
-    boxShadow: "0 8px 30px rgba(20,33,61,0.25)",
-  },
-  title: { margin: 0, fontSize: "1.6rem", fontWeight: 900, color: "var(--brand)" },
-  subtitle: { margin: "4px 0 28px", color: "var(--ink-soft)" },
-  label: { display: "block", fontSize: "0.9rem", marginBottom: 6, color: "var(--ink-soft)" },
-  input: {
-    width: "100%",
-    padding: "12px 14px",
-    marginBottom: 18,
-    border: "1px solid var(--line)",
-    borderRadius: 8,
-    fontSize: "1rem",
-    fontFamily: "inherit",
-  },
-  official: { display: "block", color: "var(--ink-soft)", fontSize: ".72rem", marginTop: 5 },
-  error: {
-    background: "var(--danger-bg)",
-    color: "var(--danger)",
-    padding: "10px 12px",
-    borderRadius: 8,
-    fontSize: "0.9rem",
-    marginBottom: 16,
-  },
-};

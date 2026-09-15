@@ -4,7 +4,7 @@ import axios from "axios";
 // ملاحظة: VITE_API_BASE="" (سلسلة فارغة) مقصودة عند النشر عبر Docker/nginx —
 // تعني "استخدم مسارات نسبية على نفس الأصل" (nginx يمرّرها إلى backend)،
 // لذا نستخدم ?? بدل || كي لا تُستبدل السلسلة الفارغة بالقيمة الافتراضية.
-export const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:8000";
+export const API_BASE = import.meta.env.VITE_API_BASE ?? "";
 
 const api = axios.create({ baseURL: API_BASE });
 

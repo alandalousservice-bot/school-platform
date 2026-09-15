@@ -8,6 +8,7 @@ export const LABELS = {
   absences: "إدارة الغياب والحضور",
   grades: "دفتر النقاط",
   inventory: "مخزون المطعم المدرسي",
+  budget: "الميزانية والاعتمادات",
   staffAccounts: "حسابات الطاقم",
   studentProfile: "بطاقة التلميذ",
   professionalProfile: "البطاقة المهنية",

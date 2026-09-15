@@ -8,7 +8,7 @@ from app.core.security import hash_password
 from app.database import Base, SessionLocal, engine
 from app.models.models import (
     User, Role, Classroom, Student, Schedule, AbsencePeriod,
-    InventoryItem, DailyMeal, MealPeriod,
+    InventoryItem, DailyMeal, MealPeriod, BudgetLine, BudgetTransaction,
 )
 
 Base.metadata.create_all(bind=engine)
@@ -45,6 +45,20 @@ else:
 
     db.add(DailyMeal(date=date.today(), period=MealPeriod.LUNCH, description="عدس بالخضر وأرز"))
 
+    budget_lines = [
+        BudgetLine(school_year="2026/2027", category="OPERATING", title="لوازم النظافة والتسيير", allocated_amount=120000, spent_amount=35000, notes="اعتماد تشغيلي"),
+        BudgetLine(school_year="2026/2027", category="CANTEEN", title="تموين المطعم المدرسي", allocated_amount=450000, spent_amount=185000, notes="المواد الغذائية الأساسية"),
+        BudgetLine(school_year="2026/2027", category="MAINTENANCE", title="صيانة المرافق", allocated_amount=180000, spent_amount=60000, notes="إصلاحات دورية"),
+        BudgetLine(school_year="2026/2027", category="EQUIPMENT", title="وسائل تعليمية", allocated_amount=250000, spent_amount=0, notes="مقترح اقتناء"),
+    ]
+    db.add_all(budget_lines)
+
+    db.commit()
+    db.add_all([
+        BudgetTransaction(line_id=budget_lines[0].id, amount=35000, description="فاتورة مواد النظافة", created_by=admin.id),
+        BudgetTransaction(line_id=budget_lines[1].id, amount=185000, description="دفعة التموين الأولى", created_by=admin.id),
+        BudgetTransaction(line_id=budget_lines[2].id, amount=60000, description="إصلاحات السباكة", created_by=admin.id),
+    ])
     db.commit()
     print("تمت تعبئة البيانات التجريبية بنجاح.")
     print("admin / admin123")

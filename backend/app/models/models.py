@@ -196,6 +196,40 @@ class GradeEntry(Base):
     __table_args__ = (UniqueConstraint("student_id", "term", "subject"),)
 
 
+class BudgetLine(Base):
+    """اعتماد سنوي قابل للتتبع: مبلغ مرصود، مصروف، ومتبقٍ لكل محور."""
+    __tablename__ = "budget_lines"
+
+    id = Column(Integer, primary_key=True, index=True)
+    school_year = Column(String, nullable=False, index=True, default="2026/2027")
+    category = Column(String, nullable=False, index=True)
+    title = Column(String, nullable=False)
+    allocated_amount = Column(Float, nullable=False, default=0)
+    spent_amount = Column(Float, nullable=False, default=0)
+    status = Column(String, nullable=False, default="ACTIVE")  # ACTIVE / CLOSED
+    notes = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    transactions = relationship("BudgetTransaction", back_populates="line", cascade="all, delete-orphan")
+
+
+class BudgetTransaction(Base):
+    """حركة مالية مرتبطة ببند ميزانية حتى يبقى كل صرف مبررًا ومراجعًا."""
+    __tablename__ = "budget_transactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    line_id = Column(Integer, ForeignKey("budget_lines.id"), nullable=False)
+    amount = Column(Float, nullable=False)
+    description = Column(String, nullable=False)
+    kind = Column(String, nullable=False, default="EXPENSE")
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    line = relationship("BudgetLine", back_populates="transactions")
+    user = relationship("User")
+
+
 class InventoryItem(Base):
     __tablename__ = "inventory_items"
 

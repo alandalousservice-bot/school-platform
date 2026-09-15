@@ -15,10 +15,167 @@ from app.database import get_db
 from app.models.models import (
     Student, Absence, Classroom, MealConsumption, DailyMeal, InventoryItem, InventoryMovement, AuditLog, User, Role, Schedule,
     GradeEntry, StudentProfile, TeacherProfile, SchoolScheduleConfig, Facility, SubjectWeeklyQuota,
+    BudgetLine, BudgetTransaction,
 )
 from app.schemas.schemas import DashboardStats, AuditLogOut, ClassroomCreate, StudentCreate, UserCreate, GradeSubmitRequest, StudentProfileUpdate, TeacherProfileUpdate
 
 router = APIRouter(prefix="/api/admin", tags=["الإدارة"])
+
+
+BUDGET_CATEGORIES = {
+    "OPERATING": "التسيير اليومي",
+    "CANTEEN": "المطعم المدرسي",
+    "EQUIPMENT": "التجهيزات",
+    "MAINTENANCE": "الصيانة والإصلاح",
+    "ACTIVITIES": "الأنشطة التربوية",
+    "EMERGENCY": "الطوارئ",
+}
+
+
+def _budget_line_out(line: BudgetLine) -> dict:
+    return {
+        "id": line.id,
+        "school_year": line.school_year,
+        "category": line.category,
+        "category_label": BUDGET_CATEGORIES.get(line.category, line.category),
+        "title": line.title,
+        "allocated_amount": round(line.allocated_amount or 0, 2),
+        "spent_amount": round(line.spent_amount or 0, 2),
+        "remaining_amount": round((line.allocated_amount or 0) - (line.spent_amount or 0), 2),
+        "status": line.status,
+        "notes": line.notes,
+        "updated_at": line.updated_at.isoformat() if line.updated_at else None,
+    }
+
+
+@router.get("/budget/summary")
+def budget_summary(
+    school_year: str = "2026/2027",
+    current_user: User = Depends(require_roles("ADMIN", "SUPER_ADMIN")),
+    db: Session = Depends(get_db),
+):
+    """ملخص مالي موحد للمدير، مع إبقاء كل بند وحركاته قابلة للمراجعة."""
+    lines = db.query(BudgetLine).filter(BudgetLine.school_year == school_year).order_by(BudgetLine.category, BudgetLine.title).all()
+    transactions = (
+        db.query(BudgetTransaction)
+        .join(BudgetLine)
+        .filter(BudgetLine.school_year == school_year)
+        .order_by(BudgetTransaction.created_at.desc())
+        .limit(8)
+        .all()
+    )
+    allocated = sum(line.allocated_amount or 0 for line in lines)
+    spent = sum(line.spent_amount or 0 for line in lines)
+    by_category = []
+    for key, label in BUDGET_CATEGORIES.items():
+        grouped = [line for line in lines if line.category == key]
+        category_allocated = sum(line.allocated_amount or 0 for line in grouped)
+        category_spent = sum(line.spent_amount or 0 for line in grouped)
+        if category_allocated or category_spent:
+            by_category.append({
+                "category": key,
+                "label": label,
+                "allocated": round(category_allocated, 2),
+                "spent": round(category_spent, 2),
+                "remaining": round(category_allocated - category_spent, 2),
+            })
+    return {
+        "school_year": school_year,
+        "currency": "دج",
+        "totals": {
+            "allocated": round(allocated, 2),
+            "spent": round(spent, 2),
+            "remaining": round(allocated - spent, 2),
+            "utilization": round((spent / allocated) * 100, 1) if allocated else 0,
+        },
+        "categories": by_category,
+        "lines": [_budget_line_out(line) for line in lines],
+        "transactions": [{
+            "id": item.id,
+            "line_id": item.line_id,
+            "title": item.line.title,
+            "amount": round(item.amount, 2),
+            "description": item.description,
+            "kind": item.kind,
+            "created_at": item.created_at.isoformat() if item.created_at else None,
+        } for item in transactions],
+    }
+
+
+@router.post("/budget/lines")
+def create_budget_line(
+    payload: dict,
+    current_user: User = Depends(require_roles("ADMIN", "SUPER_ADMIN")),
+    db: Session = Depends(get_db),
+):
+    required = ("title", "category", "allocated_amount")
+    if any(payload.get(key) in (None, "") for key in required):
+        raise HTTPException(400, "اسم البند والتصنيف والمبلغ المرصود مطلوبة")
+    amount = float(payload["allocated_amount"])
+    if amount < 0:
+        raise HTTPException(400, "المبلغ المرصود لا يمكن أن يكون سالبًا")
+    category = payload["category"]
+    if category not in BUDGET_CATEGORIES:
+        raise HTTPException(400, "تصنيف الميزانية غير صحيح")
+    line = BudgetLine(
+        school_year=payload.get("school_year", "2026/2027"),
+        category=category,
+        title=str(payload["title"]).strip(),
+        allocated_amount=amount,
+        notes=payload.get("notes"),
+    )
+    db.add(line); db.commit(); db.refresh(line)
+    log_action(db, current_user.id, "CREATE_BUDGET_LINE", "BudgetLine", line.id, {"amount": amount})
+    return _budget_line_out(line)
+
+
+@router.post("/budget/lines/{line_id}/expense")
+def add_budget_expense(
+    line_id: int,
+    payload: dict,
+    current_user: User = Depends(require_roles("ADMIN", "SUPER_ADMIN")),
+    db: Session = Depends(get_db),
+):
+    line = db.query(BudgetLine).filter(BudgetLine.id == line_id).first()
+    if not line:
+        raise HTTPException(404, "بند الميزانية غير موجود")
+    if line.status == "CLOSED":
+        raise HTTPException(400, "لا يمكن تسجيل صرف على بند مغلق")
+    amount = float(payload.get("amount", 0))
+    description = str(payload.get("description", "")).strip()
+    if amount <= 0 or not description:
+        raise HTTPException(400, "قيمة الصرف ووصفه مطلوبان")
+    if line.spent_amount + amount > line.allocated_amount:
+        raise HTTPException(400, "قيمة الصرف تتجاوز الاعتماد المتبقي لهذا البند")
+    line.spent_amount += amount
+    transaction = BudgetTransaction(line_id=line.id, amount=amount, description=description, created_by=current_user.id)
+    db.add(transaction)
+    db.commit(); db.refresh(line)
+    log_action(db, current_user.id, "ADD_BUDGET_EXPENSE", "BudgetLine", line.id, {"amount": amount, "description": description})
+    return _budget_line_out(line)
+
+
+@router.put("/budget/lines/{line_id}")
+def update_budget_line(
+    line_id: int,
+    payload: dict,
+    current_user: User = Depends(require_roles("ADMIN", "SUPER_ADMIN")),
+    db: Session = Depends(get_db),
+):
+    line = db.query(BudgetLine).filter(BudgetLine.id == line_id).first()
+    if not line:
+        raise HTTPException(404, "بند الميزانية غير موجود")
+    if "title" in payload and str(payload["title"]).strip(): line.title = str(payload["title"]).strip()
+    if "notes" in payload: line.notes = payload["notes"]
+    if "status" in payload and payload["status"] in ("ACTIVE", "CLOSED"): line.status = payload["status"]
+    if "allocated_amount" in payload:
+        amount = float(payload["allocated_amount"])
+        if amount < line.spent_amount: raise HTTPException(400, "الاعتماد الجديد أقل من المصروف الحالي")
+        line.allocated_amount = amount
+    db.commit(); db.refresh(line)
+    log_action(db, current_user.id, "UPDATE_BUDGET_LINE", "BudgetLine", line.id)
+    return _budget_line_out(line)
+
 
 @router.get("/schedule-config")
 def get_schedule_config(current_user: User = Depends(require_roles("ADMIN", "SUPER_ADMIN")), db: Session = Depends(get_db)):

@@ -36,6 +36,7 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         refresh_token=refresh_token,
         role=user.role.value,
         full_name=user.full_name,
+        user_id=user.id,
     )
 
 
@@ -53,6 +54,7 @@ def refresh(payload: RefreshRequest, db: Session = Depends(get_db)):
         refresh_token=payload.refresh_token,
         role=user.role.value,
         full_name=user.full_name,
+        user_id=user.id,
     )
 
 
