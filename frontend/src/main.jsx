@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./theme.css";
 import "./theme-overrides.css";
+import "./index.css";
 import "./data-list.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(

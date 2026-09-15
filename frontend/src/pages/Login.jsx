@@ -67,6 +67,7 @@ export default function Login() {
           {error && <div className="login-error" role="alert"><Icon name="empty" size={17} />{error}</div>}
           <Button className="login-button" style={{ width: "100%", marginTop: 8 }} disabled={loading}>{loading ? "جارِ التحقق..." : "الدخول إلى المنصة"}<span aria-hidden="true">←</span></Button>
           <div className="login-security"><span>●</span> اتصال محلي آمن · صلاحيات حسب الدور</div>
+          <button type="button" className="login-home-link" onClick={() => navigate("/")}>← العودة إلى الصفحة الرئيسية</button>
         </form>
         <small className="login-footer">{SCHOOL_BRAND.republic} · {SCHOOL_BRAND.ministry}</small>
       </section>
