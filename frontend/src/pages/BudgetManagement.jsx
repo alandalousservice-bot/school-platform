@@ -33,7 +33,6 @@ export default function BudgetManagement() {
   const [error, setError] = useState("");
 
   const load = useCallback(async () => {
-    setLoading(true);
     try {
       const { data } = await api.get("/api/admin/budget/summary", { params: { school_year: schoolYear } });
       setSummary(data);
@@ -45,6 +44,8 @@ export default function BudgetManagement() {
     }
   }, [schoolYear]);
 
+  // إعادة تحميل الملخص عند تغيير السنة الدراسية؛ الاستثناء مقصود لمزامنة الخادم.
+  // oxlint-disable-next-line react(set-state-in-effect)
   useEffect(() => { load(); }, [load]);
 
   function notify(message, type = "success") {
